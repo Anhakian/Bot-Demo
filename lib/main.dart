@@ -1,5 +1,5 @@
 import 'package:bot_demo/pages/bot_page.dart';
-import 'package:bot_demo/pages/mcr_page.dart';
+import 'package:bot_demo/pages/mcq_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       home: const BotPage(),
       routes: {
         '/botpage': (context) => const BotPage(),
-        '/botmcr': (context) => const McrPage()
+        '/botmcr': (context) => const McqPage()
       },
     );
   }
