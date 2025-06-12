@@ -4,6 +4,7 @@ class BotAvatarBox extends StatelessWidget {
   final String image;
   final String name;
   final String description;
+  final String score;
   final Color borderColor;
   final double borderWidth;
   final BorderRadius? borderRadius;
@@ -14,6 +15,7 @@ class BotAvatarBox extends StatelessWidget {
     required this.image,
     required this.name,
     required this.description,
+    required this.score,
     this.borderColor = const Color(0xFF433F3B),
     this.borderWidth = 5.0,
     this.borderRadius,
@@ -48,7 +50,7 @@ class BotAvatarBox extends StatelessWidget {
               ),
               const SizedBox(height: 12.0),
 
-              // Image section - takes up most of the space
+              // Image
               Expanded(
                 flex: 3,
                 child: SizedBox(
@@ -75,13 +77,24 @@ class BotAvatarBox extends StatelessWidget {
 
               const SizedBox(height: 12.0),
 
-              // Description
+              // Description (slogan)
               Text(
                 description,
                 style: TextStyle(fontSize: 10, color: Colors.grey[400]),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+              ),
+
+              const SizedBox(height: 4.0),
+
+              // MCAT Score (bold)
+              Text(
+                'MCAT: $score',
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),

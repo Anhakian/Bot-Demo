@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class McrPage extends StatelessWidget {
-  const McrPage({super.key});
+class McqPage extends StatelessWidget {
+  const McqPage({super.key});
 
   @override
   Widget build(BuildContext context) {
