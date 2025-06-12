@@ -55,7 +55,7 @@ class BotDetailPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/botmcr');
+                  Navigator.pushNamed(context, '/botquiz');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3F3D3D),
