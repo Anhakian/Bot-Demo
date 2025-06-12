@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       home: const BotPage(),
       routes: {
         '/botpage': (context) => const BotPage(),
-        '/botmcr': (context) => const McqPage()
+        '/botmcr': (context) => const QuizScreen()
       },
     );
   }
