@@ -1,6 +1,6 @@
 import 'package:bot_demo/components/bot_avatar_box.dart';
-import 'package:bot_demo/resources/bots.dart';
 import 'package:flutter/material.dart';
+import '../resources/bots.dart';
 import 'bot_detail_page.dart';
 
 class BotPage extends StatelessWidget {
