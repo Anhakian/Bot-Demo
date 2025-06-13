@@ -13,21 +13,24 @@ const bots = [
     'image': 'assets/images/dr_shepherd_image.png',
     'name': 'Dr. Shepherd',
     'description': 'Your favourite illogical neurosurgeon',
-    'backstory': 'Survived 7 MCAT retakes by pure instinct and caffeine.',
+    'backstory': 'The legendary neurosurgeon known for his cocky confidence and brilliant surgical mind. '
+        'His charm may distract you, but do not let that fool you - he expects nothing less than excellence and will not go easy on anyone trying to match his intellenct',
     'score': '525',
   },
   {
     'image': 'assets/images/aamc_image.png',
     'name': 'Sinister AAMC',
     'description': 'Did you just beat the system!',
-    'backstory': 'The ultimate gatekeeper of your medical future. Beware.',
+    'backstory': 'The dark mirror of the offical MCAT testing organization, this bot knows every trick question and trap answer in the book.'
+        ' Sinister AAMC delights in crafting the most challenging and psycologically demanding questions. Face your fears and conquer the test that haunts your dreams.',
     'score': '528',
   },
   {
     'image': 'assets/images/chatgpt_ai_image.png',
     'name': 'ChatGPT-530',
     'description': 'Hold-on... you got to be hacking!',
-    'backstory': 'A neural net trained on 10,000 exams. Probably cheating.',
+    'backstory': 'An AI that achieved perfect MCAT scores through pure computational power and pattern recognition.'
+        'While it lacks human intuition, its lightning-fact recall and logical reasoning make it a formidable opponent for any aspiring physician.',
     'score': '530?',
   },
 ];
