@@ -1,3 +1,4 @@
+import 'package:bot_demo/components/dialogue_box.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/questions.dart';
@@ -243,30 +244,8 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  // Info box
-                  Expanded(
-                    child: Container(
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Dialogue',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+
+                  DialogueBox()
                 ],
               ),
 

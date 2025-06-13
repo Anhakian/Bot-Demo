@@ -1,4 +1,4 @@
-const bots = [
+const List<Map<String, dynamic>> bots = [
   {
     'image': 'assets/images/heath_image.png',
     'name': 'Beat the Heath',
@@ -8,6 +8,17 @@ const bots = [
             ' Known for his mastery of logic and test strategy, he is the benchmark every challenger'
             'hopes to beat. Think you can outscore the creator?',
     'score': '522',
+    'comments': {
+      'start': 'Initializing medical knowledge...',
+      'right': 'Impressive. Your circuits are firing well.',
+      'wrong': 'Unlikely. But even I can be surprised.',
+      'slow': 'Time dilation detected.',
+      'fast': 'You answered with neural precision.',
+      'random': 'I read every textbook. Twice.',
+      'end_win': 'You\'ve done the impossible...',
+      'end_lose': 'Flawless victory. Try again when you\'re upgraded.',
+      'secret': 'YOU JUST DID THE IMPOSSIBLE!',
+    }
   },
   {
     'image': 'assets/images/dr_shepherd_image.png',
