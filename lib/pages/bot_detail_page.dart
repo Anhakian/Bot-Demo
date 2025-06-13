@@ -28,7 +28,7 @@ class BotDetailPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.only(top: 96.0, left: 24.0, right: 24.0, bottom: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -36,20 +36,20 @@ class BotDetailPage extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               slogan,
-              style: const TextStyle(color: Colors.grey, fontSize: 14),
+              style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             const SizedBox(height: 12),
             Text(
               'MCAT Score: $mcatScore',
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
             const SizedBox(height: 12),
             Text(
               backstory,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 60),
             SizedBox(
               width: double.infinity,
               height: 50,
