@@ -1,10 +1,8 @@
+import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 
 class BotAvatarBox extends StatelessWidget {
-  final String image;
-  final String name;
-  final String description;
-  final String score;
+  final Bot bot;
   final Color borderColor;
   final double borderWidth;
   final BorderRadius? borderRadius;
@@ -12,10 +10,7 @@ class BotAvatarBox extends StatelessWidget {
 
   const BotAvatarBox({
     super.key,
-    required this.image,
-    required this.name,
-    required this.description,
-    required this.score,
+    required this.bot,
     this.borderColor = const Color(0xFF433F3B),
     this.borderWidth = 5.0,
     this.borderRadius,
@@ -38,7 +33,7 @@ class BotAvatarBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                name,
+                bot.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -58,7 +53,7 @@ class BotAvatarBox extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.asset(
-                      image,
+                      bot.image,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
@@ -79,7 +74,7 @@ class BotAvatarBox extends StatelessWidget {
 
               // Description (slogan)
               Text(
-                description,
+                bot.description,
                 style: TextStyle(fontSize: 10, color: Colors.grey[400]),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -90,7 +85,7 @@ class BotAvatarBox extends StatelessWidget {
 
               // MCAT Score (bold)
               Text(
-                'MCAT: $score',
+                'MCAT: ${bot.score}',
                 style: const TextStyle(
                   fontSize: 11,
                   color: Colors.white,

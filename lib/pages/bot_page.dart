@@ -1,4 +1,5 @@
 import 'package:bot_demo/components/bot_avatar_box.dart';
+import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 import '../resources/bots.dart';
 import 'bot_detail_page.dart';
@@ -32,22 +33,15 @@ class BotPage extends StatelessWidget {
           itemCount: bots.length,
           itemBuilder: (context, index) {
             final bot = bots[index];
+            final botModel = Bot.fromMap(bot);
             return BotAvatarBox(
-              image: bot['image'] as String,
-              name: bot['name'] as String,
-              description: bot['description'] as String,
-              score: bot['score'] as String,
+              bot: botModel,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => BotDetailPage(
-                      image: bot['image']!,
-                      name: bot['name']!,
-                      description: bot['description']!,
-                      slogan: bot['description']!,
-                      backstory: bot['backstory']!,
-                      mcatScore: bot['score']!,
+                      bot: botModel,
                     ),
                   ),
                 );

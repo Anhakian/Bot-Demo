@@ -1,12 +1,18 @@
 import 'package:bot_demo/components/dialogue_box.dart';
+import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/questions.dart';
 
 class QuizScreen extends StatefulWidget {
+  final Bot bot;
   final String difficulty;
 
-  const QuizScreen({super.key, this.difficulty = "beginner"});
+  const QuizScreen({
+    super.key,
+    required this.bot,
+    this.difficulty = "beginner",
+  });
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -254,7 +260,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
-                        'assets/images/heath_image.png',
+                        widget.bot.image,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return const Icon(

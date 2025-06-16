@@ -1,21 +1,13 @@
+import 'package:bot_demo/components/router.dart';
+import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 
 class BotDetailPage extends StatelessWidget {
-  final String image;
-  final String name;
-  final String description;
-  final String backstory;
-  final String mcatScore;
-  final String slogan;
+  final Bot bot;
 
   const BotDetailPage({
     super.key,
-    required this.image,
-    required this.name,
-    required this.description,
-    required this.backstory,
-    required this.mcatScore,
-    required this.slogan,
+    required this.bot,
   });
 
   @override
@@ -24,28 +16,29 @@ class BotDetailPage extends StatelessWidget {
       backgroundColor: const Color(0xFF212323),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(name, style: const TextStyle(color: Colors.white)),
+        title: Text(bot.name, style: const TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 96.0, left: 24.0, right: 24.0, bottom: 24.0),
+        padding: const EdgeInsets.only(
+            top: 96.0, left: 24.0, right: 24.0, bottom: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(image, height: 180),
+            Image.asset(bot.image, height: 180),
             const SizedBox(height: 16),
             Text(
-              slogan,
+              bot.description,
               style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             const SizedBox(height: 12),
             Text(
-              'MCAT Score: $mcatScore',
+              'MCAT Score: ${bot.score}',
               style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
             const SizedBox(height: 12),
             Text(
-              backstory,
+              bot.backstory,
               style: const TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
             ),
@@ -55,7 +48,11 @@ class BotDetailPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/botquiz');
+                  Navigator.pushNamed(
+                    context,
+                    AppRouter.botQuizRoute,
+                    arguments: bot,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3F3D3D),
