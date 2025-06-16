@@ -1,5 +1,5 @@
+import 'package:bot_demo/components/router.dart';
 import 'package:bot_demo/pages/bot_page.dart';
-import 'package:bot_demo/pages/quiz_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,13 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const BotPage(),
-      routes: {
-        '/botpage': (context) => const BotPage(),
-        '/botquiz': (context) => const QuizScreen()
-      },
+      home: BotPage(),
+      initialRoute: AppRouter.myAppRoute,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }
