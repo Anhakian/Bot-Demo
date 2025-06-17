@@ -6,12 +6,10 @@ import '../resources/questions.dart';
 
 class QuizScreen extends StatefulWidget {
   final Bot bot;
-  final String difficulty;
 
   const QuizScreen({
     super.key,
     required this.bot,
-    this.difficulty = "beginner",
   });
 
   @override
@@ -19,14 +17,32 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  static final int NUM_QUESTIONS = 5;
   int currentQuestionIndex = 0;
   String? selectedAnswer;
   TextEditingController textController = TextEditingController();
   int score = 0;
   bool isAnswered = false;
 
-  List<Map<String, dynamic>> get currentQuestions =>
-      QUESTION_BANK[widget.difficulty] as List<Map<String, dynamic>>;
+  late List<Map<String, dynamic>> currentQuestions;
+  late List<Map<String, dynamic>> allQuestions;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Flatten all questions from all categories
+    allQuestions = QUESTION_BANK.values.expand((list) => list).toList();
+
+    shuffleQuestions();
+  }
+
+  void shuffleQuestions() {
+    // Shuffle the list for randomness
+    allQuestions.shuffle();
+
+    currentQuestions = allQuestions.take(NUM_QUESTIONS).toList();
+  }
 
   Map<String, dynamic> get currentQuestion =>
       currentQuestions[currentQuestionIndex];
@@ -81,6 +97,7 @@ class _QuizScreenState extends State<QuizScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
+                  shuffleQuestions();
                   setState(() {
                     currentQuestionIndex = 0;
                     score = 0;
@@ -114,6 +131,19 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     return Colors.grey[300]!;
+  }
+
+  Color getTextAnswerColor() {
+    if (!isAnswered) {
+      return Colors.grey[300]!;
+    }
+
+    if (textController.text.trim().toLowerCase() ==
+        currentQuestion['answer'].toLowerCase().trim()) {
+      return Colors.green;
+    } else {
+      return Colors.red;
+    }
   }
 
   Widget buildAnswerOptions() {
@@ -194,16 +224,20 @@ class _QuizScreenState extends State<QuizScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: getTextAnswerColor(),
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextField(
               controller: textController,
+              enabled: !isAnswered,
               decoration: const InputDecoration(
                 hintText: 'Your answer...',
                 border: InputBorder.none,
               ),
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
               onChanged: (value) {
                 setState(() {
                   selectedAnswer = value.isNotEmpty ? value : null;
@@ -211,6 +245,21 @@ class _QuizScreenState extends State<QuizScreen> {
               },
             ),
           ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () => nextQuestion(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF3F3D3D),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ),
+            child: Icon(
+              Icons.send,
+              color: Colors.grey[400],
+              size: 20,
+            ),
+          )
         ],
       );
     }
