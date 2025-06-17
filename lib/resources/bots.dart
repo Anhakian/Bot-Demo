@@ -7,7 +7,7 @@ const List<Map<String, dynamic>> bots = [
     'backstory':
         'Heath founded the company with a vision to help students conquer the MCAT.'
             ' Known for his mastery of logic and test strategy, he is the benchmark every challenger'
-            'hopes to beat. Think you can outscore the creator?',
+            ' hopes to beat. Think you can outscore the creator?',
     'score': '522',
     'comments': {
       'start': 'Initializing medical knowledge...',
@@ -24,21 +24,20 @@ const List<Map<String, dynamic>> bots = [
   {
     'id': 2,
     'image': 'assets/images/dr_shepherd_image.png',
-    'name': 'Dr. Shepherd',
-    'description': 'Your favourite illogical neurosurgeon',
+    'name': 'CRISPR Cassie IX',
+    'description': 'A precision-engineered logic AI',
     'backstory':
-        'The legendary neurosurgeon known for his cocky confidence and brilliant surgical mind. '
-            'His charm may distract you, but do not let that fool you - he expects nothing less than excellence and will not go easy on anyone trying to match his intellenct',
-    'score': '525',
+        "Created in a lab to correct humanity's mistakes one base pair at a time."
+            " Cassie operates on pure logic and lives for clean gene editing.",
+    'score': '519',
   },
   {
     'id': 3,
     'image': 'assets/images/aamc_image.png',
-    'name': 'Sinister AAMC',
-    'description': 'Did you just beat the system!',
+    'name': 'Einstein MD',
+    'description': 'Theoretical genius meets clinical precision',
     'backstory':
-        'The dark mirror of the offical MCAT testing organization, this bot knows every trick question and trap answer in the book.'
-            ' Sinister AAMC delights in crafting the most challenging and psycologically demanding questions. Face your fears and conquer the test that haunts your dreams.',
+        'After rewriting the laws of physics, Einstein went to med school for fun. He finds the MCAT... quaint.',
     'score': '528',
   },
   {
