@@ -1,5 +1,6 @@
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BotAvatarBox extends StatelessWidget {
   final Bot bot;
@@ -34,9 +35,9 @@ class BotAvatarBox extends StatelessWidget {
             children: [
               Text(
                 bot.name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 12.sp,
                   color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
@@ -75,7 +76,7 @@ class BotAvatarBox extends StatelessWidget {
               // Description (slogan)
               Text(
                 bot.description,
-                style: TextStyle(fontSize: 10, color: Colors.grey[400]),
+                style: TextStyle(fontSize: 10.sp, color: Colors.grey[400]),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

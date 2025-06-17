@@ -1,6 +1,7 @@
 import 'package:bot_demo/components/dialogue_box.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../resources/questions.dart';
 
@@ -141,8 +142,8 @@ class _QuizScreenState extends State<QuizScreen> {
                     child: Center(
                       child: Text(
                         option,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
@@ -175,8 +176,8 @@ class _QuizScreenState extends State<QuizScreen> {
                     child: Center(
                       child: Text(
                         option,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
@@ -203,7 +204,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 hintText: 'Your answer...',
                 border: InputBorder.none,
               ),
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16.sp),
               onChanged: (value) {
                 setState(() {
                   selectedAnswer = value.isNotEmpty ? value : null;
@@ -292,17 +293,17 @@ class _QuizScreenState extends State<QuizScreen> {
                   children: [
                     Text(
                       'Question ${currentQuestionIndex + 1}/${currentQuestions.length}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       currentQuestion['question'],
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
