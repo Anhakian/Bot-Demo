@@ -1,6 +1,7 @@
 import 'package:bot_demo/components/router.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BotDetailPage extends StatelessWidget {
   final Bot bot;
@@ -19,33 +20,59 @@ class BotDetailPage extends StatelessWidget {
         title: Text(bot.name, style: const TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-            top: 96.0, left: 24.0, right: 24.0, bottom: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(bot.image, height: 180),
-            const SizedBox(height: 16),
-            Text(
-              bot.description,
-              style: const TextStyle(color: Colors.grey, fontSize: 20),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: 25.h,
+              left: 20.w,
+              right: 20.w,
+              bottom: 80.h, // spacing for button
             ),
-            const SizedBox(height: 12),
-            Text(
-              'MCAT Score: ${bot.score}',
-              style: const TextStyle(color: Colors.white, fontSize: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(bot.image, height: 180),
+                SizedBox(height: 10.h),
+                Text(
+                  bot.description,
+                  style: TextStyle(color: Colors.grey, fontSize: 18.sp),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'MCAT Score: ${bot.score}',
+                  style: TextStyle(color: Colors.white, fontSize: 18.sp),
+                ),
+                SizedBox(height: 10.h),
+
+                // Scrollable Backstory Box
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    decoration: const BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Text(
+                        bot.backstory,
+                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            Text(
-              bot.backstory,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 60),
-            SizedBox(
+          ),
+
+          /// Fixed Play Button
+          Positioned(
+            left: 20.w,
+            right: 20.w,
+            bottom: 25.h,
+            child: SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 40.h,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(
@@ -60,14 +87,14 @@ class BotDetailPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Play',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 20.sp),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
