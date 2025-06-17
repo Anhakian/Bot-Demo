@@ -44,7 +44,7 @@ class BotDetailPage extends StatelessWidget {
             // Bot description
             Text(
               bot.description,
-              style: const TextStyle(color: Colors.grey, fontSize: 20),
+              style: const TextStyle(color: Colors.white, fontSize: 20),
               textAlign: TextAlign.center,
             ),
 
