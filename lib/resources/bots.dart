@@ -23,7 +23,7 @@ const List<Map<String, dynamic>> bots = [
   },
   {
     'id': 2,
-    'image': 'assets/images/dr_shepherd_image.png',
+    'image': 'assets/images/Cassie_image.png',
     'name': 'CRISPR Cassie IX',
     'description': 'A precision-engineered logic AI',
     'backstory':
@@ -33,7 +33,7 @@ const List<Map<String, dynamic>> bots = [
   },
   {
     'id': 3,
-    'image': 'assets/images/aamc_image.png',
+    'image': 'assets/images/Einstein_MD.png',
     'name': 'Einstein MD',
     'description': 'Theoretical genius meets clinical precision',
     'backstory':
