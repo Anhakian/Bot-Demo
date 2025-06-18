@@ -27,7 +27,7 @@ class BotDetailPage extends StatelessWidget {
               top: 25.h,
               left: 20.w,
               right: 20.w,
-              bottom: 80.h, // spacing for button
+              bottom: 100.h, // spacing for button
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,6 +60,7 @@ class BotDetailPage extends StatelessWidget {
                 // Scrollable Backstory Box
                 Expanded(
                   child: Container(
+                    height: 5.h,
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     decoration: const BoxDecoration(
                       color: Colors.transparent,
@@ -97,8 +98,6 @@ class BotDetailPage extends StatelessWidget {
               ],
             ),
           ),
-
-          /// Fixed Play Button
           Positioned(
             left: 20.w,
             right: 20.w,
