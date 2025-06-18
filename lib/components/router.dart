@@ -2,7 +2,7 @@ import 'package:bot_demo/main.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:bot_demo/pages/bot_detail_page.dart';
 import 'package:bot_demo/pages/quiz_page.dart';
-import 'package:bot_demo/pages/end_quiz_page.dart'; // <-- import your new page
+import 'package:bot_demo/pages/end_quiz_page.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
