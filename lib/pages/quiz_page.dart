@@ -18,6 +18,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  late DateTime startTime;
   static final int NUM_QUESTIONS = 5;
   int currentQuestionIndex = 0;
   String? selectedAnswer;
@@ -30,6 +31,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
+    startTime = DateTime.now();
     super.initState();
 
     // Flatten all questions from all categories
@@ -89,28 +91,15 @@ class _QuizScreenState extends State<QuizScreen> {
         });
       } else {
         // Quiz finished
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Quiz Complete!'),
-            content: Text('Your score: $score/${currentQuestions.length}'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  shuffleQuestions();
-                  setState(() {
-                    currentQuestionIndex = 0;
-                    score = 0;
-                    selectedAnswer = null;
-                    textController.clear();
-                    isAnswered = false; // Reset for restart
-                  });
-                },
-                child: const Text('Restart'),
-              ),
-            ],
-          ),
+        Navigator.pushReplacementNamed(
+          context,
+          '/endquiz',
+          arguments: {
+            'bot': widget.bot,
+            'score': score,
+            'total': currentQuestions.length,
+            'timeTaken': DateTime.now().difference(startTime),
+          },
         );
       }
     });
