@@ -32,16 +32,16 @@ class BotDetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(bot.image, height: 180),
+                Image.asset(bot.image, height: 150.h),
 
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
 
                 // Head-to-head placeholder
-                const Text(
+                Text(
                   'Head-to-Head: 0 - 0',
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500),
                 ),
 
@@ -76,8 +76,8 @@ class BotDetailPage extends StatelessWidget {
 
                 // Achievements Button (placeholder)
                 SizedBox(
-                  width: 60,
-                  height: 60,
+                  width: 55.w,
+                  height: 55.h,
                   child: OutlinedButton(
                     onPressed: () {
                       // TODO: Navigate to achievements page
@@ -85,13 +85,13 @@ class BotDetailPage extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.grey),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
+                        borderRadius: BorderRadius.circular(12.sp),
                       ),
                       backgroundColor: const Color(0xFF3F3D3D),
                       padding: EdgeInsets.zero,
                     ),
-                    child: const Icon(Icons.emoji_events,
-                        color: Colors.amber, size: 32),
+                    child: Icon(Icons.emoji_events,
+                        color: Colors.amber, size: 30.sp),
                   ),
                 ),
               ],
@@ -122,12 +122,11 @@ class BotDetailPage extends StatelessWidget {
                 ),
                 child: Text(
                   'Play',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 16),
         ],
       ),
     );

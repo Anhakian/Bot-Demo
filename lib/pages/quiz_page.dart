@@ -145,7 +145,7 @@ class _QuizScreenState extends State<QuizScreen> {
         children: options
             .map(
               (option) => Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+                padding: EdgeInsets.only(bottom: 16.sp),
                 child: GestureDetector(
                   onTap: () {
                     selectAnswer(option);
@@ -153,10 +153,10 @@ class _QuizScreenState extends State<QuizScreen> {
                   },
                   child: Container(
                     width: double.infinity,
-                    height: 60,
+                    height: 50.h,
                     decoration: BoxDecoration(
                       color: getOptionColor(option),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.sp),
                     ),
                     child: Center(
                       child: Text(
@@ -179,7 +179,7 @@ class _QuizScreenState extends State<QuizScreen> {
         children: ['True', 'False']
             .map(
               (option) => Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+                padding: EdgeInsets.only(bottom: 16.sp),
                 child: GestureDetector(
                   onTap: () {
                     selectAnswer(option);
@@ -187,10 +187,10 @@ class _QuizScreenState extends State<QuizScreen> {
                   },
                   child: Container(
                     width: double.infinity,
-                    height: 60,
+                    height: 50.h,
                     decoration: BoxDecoration(
                       color: getOptionColor(option),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.sp),
                     ),
                     child: Center(
                       child: Text(
@@ -212,10 +212,11 @@ class _QuizScreenState extends State<QuizScreen> {
       return Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.sp),
+            height: 60.h,
             decoration: BoxDecoration(
               color: getTextAnswerColor(),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.sp),
             ),
             child: TextField(
               controller: textController,
@@ -235,19 +236,19 @@ class _QuizScreenState extends State<QuizScreen> {
               },
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10.h),
           ElevatedButton(
             onPressed: () => nextQuestion(),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3F3D3D),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12.sp),
               ),
             ),
             child: Icon(
               Icons.send,
               color: Colors.grey[400],
-              size: 20,
+              size: 20.sp,
             ),
           )
         ],
@@ -285,15 +286,15 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.sp),
           child: Column(
             children: [
               Row(
                 children: [
                   // Avatar
                   SizedBox(
-                    width: 80,
-                    height: 80,
+                    width: 70.w,
+                    height: 70.h,
                     // decoration: BoxDecoration(
                     //   color: Colors.brown[300],
                     //   borderRadius: BorderRadius.circular(8),
@@ -304,30 +305,30 @@ class _QuizScreenState extends State<QuizScreen> {
                         widget.bot.image,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
+                          return Icon(
                             Icons.person,
-                            size: 40,
+                            size: 40.sp,
                             color: Colors.white,
                           );
                         },
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.sp),
 
                   const DialogueBox()
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
 
               // Question section
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20.sp),
                 decoration: BoxDecoration(
                   color: const Color(0xFF3F3D3D),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.sp),
                 ),
                 child: Column(
                   children: [
@@ -338,7 +339,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         fontSize: 14.sp,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text(
                       currentQuestion['question'],
                       style: TextStyle(
@@ -352,7 +353,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
 
               // Answer options
               Expanded(

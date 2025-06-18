@@ -8,7 +8,7 @@ class DialogueBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 100,
+        height: 90.h,
         child: ClipPath(
           child: Container(
             color: Colors.grey[300],
