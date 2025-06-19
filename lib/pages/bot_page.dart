@@ -1,6 +1,7 @@
 import 'package:bot_demo/components/bot_avatar_box.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../resources/bots.dart';
 import 'bot_detail_page.dart';
 
@@ -22,12 +23,12 @@ class BotPage extends StatelessWidget {
         actions: const [Icon(Icons.search, color: Colors.white)],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(20.w),
         child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
+            crossAxisSpacing: 14.w,
+            mainAxisSpacing: 14.w,
             childAspectRatio: 1.0,
           ),
           itemCount: bots.length,

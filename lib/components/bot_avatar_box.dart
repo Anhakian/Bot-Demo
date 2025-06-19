@@ -1,10 +1,11 @@
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BotAvatarBox extends StatelessWidget {
   final Bot bot;
   final Color borderColor;
-  final double borderWidth;
+  final double? borderWidth;
   final BorderRadius? borderRadius;
   final VoidCallback? onTap;
 
@@ -12,38 +13,40 @@ class BotAvatarBox extends StatelessWidget {
     super.key,
     required this.bot,
     this.borderColor = const Color(0xFF433F3B),
-    this.borderWidth = 5.0,
+    this.borderWidth,
     this.borderRadius,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final double effectiveBorderWidth = borderWidth ?? 4.w;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: const Color(0xFF2A2D2D),
-          border: Border.all(color: borderColor, width: borderWidth),
-          borderRadius: borderRadius ?? BorderRadius.circular(12.0),
+          border: Border.all(color: borderColor, width: effectiveBorderWidth),
+          borderRadius: borderRadius ?? BorderRadius.circular(12.sp),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(7.sp),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 bot.name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 12.sp,
                   color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 12.0),
+              SizedBox(height: 10.sp),
 
               // Image
               Expanded(
@@ -51,7 +54,7 @@ class BotAvatarBox extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
+                    // borderRadius: BorderRadius.circular(8.sp),
                     child: Image.asset(
                       bot.image,
                       fit: BoxFit.contain,
@@ -61,7 +64,7 @@ class BotAvatarBox extends StatelessWidget {
                           child: Icon(
                             Icons.smart_toy,
                             color: Colors.grey[400],
-                            size: 40,
+                            size: 35.w,
                           ),
                         );
                       },
@@ -70,24 +73,24 @@ class BotAvatarBox extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 12.0),
+              SizedBox(height: 8.sp),
 
               // Description (slogan)
               Text(
                 bot.description,
-                style: TextStyle(fontSize: 10, color: Colors.grey[400]),
+                style: TextStyle(fontSize: 10.sp, color: Colors.grey[400]),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
 
-              const SizedBox(height: 4.0),
+              SizedBox(height: 4.sp),
 
               // MCAT Score (bold)
               Text(
                 'MCAT: ${bot.score}',
-                style: const TextStyle(
-                  fontSize: 11,
+                style: TextStyle(
+                  fontSize: 11.sp,
                   color: Colors.white,
                 ),
               ),
