@@ -1,4 +1,4 @@
-//Achievements page
+// Achievements page
 
 typedef AchievementEvaluator = bool Function({
 required int score,
