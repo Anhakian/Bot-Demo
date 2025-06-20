@@ -1,8 +1,5 @@
-// End Quiz Page
-
 import 'dart:math';
 import 'package:bot_demo/models/bot.dart';
-import 'package:bot_demo/resources/achievements.dart';
 import 'package:flutter/material.dart';
 
 class EndQuizPage extends StatelessWidget {
@@ -23,21 +20,24 @@ class EndQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final int minutes = timeTaken.inMinutes;
     final int seconds = timeTaken.inSeconds % 60;
-    final int botScore = Random().nextInt(total + 1); // Random score from 0 to total
+    final int botScore = Random().nextInt(total + 1); // Random bot score between 0 and total
 
-    // Evaluate achievements based on current performance
-    final List<Map<String, String>> earnedAchievements = ACHIEVEMENTS
-        .where((a) => a.shouldAward(
-      score: score,
-      total: total,
-      timeTaken: timeTaken,
-      botScore: botScore,
-    ))
-        .map((a) => {
-      'title': a.title,
-      'subtitle': a.subtitle,
-    })
-        .toList();
+    // Determine which achievements were earned
+    List<Map<String, String>> earnedAchievements = [];
+
+    if (timeTaken.inSeconds < 60) {
+      earnedAchievements.add({
+        'title': '⏱️ Speed Demon',
+        'subtitle': 'Completed under 1 minute'
+      });
+    }
+
+    if (score == total) {
+      earnedAchievements.add({
+        'title': '🎯 Perfect Score',
+        'subtitle': '5 out of 5 correct!'
+      });
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFF212323),
@@ -50,8 +50,7 @@ class EndQuizPage extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () =>
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
+          onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/')),
         ),
         actions: const [Icon(Icons.search, color: Colors.white)],
       ),
@@ -73,7 +72,7 @@ class EndQuizPage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -137,14 +136,14 @@ class EndQuizPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
-                    children: [
+                    children: const [
                       Text('💰', style: TextStyle(fontSize: 30)),
                       Text('+100 Coins', style: TextStyle(color: Colors.green)),
                       Text('Total: 1450', style: TextStyle(color: Colors.white)),
                     ],
                   ),
                   Column(
-                    children: [
+                    children: const [
                       Text('📓', style: TextStyle(fontSize: 30)),
                       Text('+2 MCAT score', style: TextStyle(color: Colors.green)),
                       Text('Total: 515', style: TextStyle(color: Colors.white)),
@@ -180,18 +179,20 @@ class EndQuizPage extends StatelessWidget {
                   }).toList(),
                 ),
               ],
-              const SizedBox(height: 30),
-              ElevatedButton.icon(
-                onPressed: () =>
-                    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  backgroundColor: const Color(0xFF3F3D3D),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/')),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: const Color(0xFF3F3D3D),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  icon: const Icon(Icons.home, color: Colors.white),
+                  label: const Text('Home', style: TextStyle(color: Colors.white)),
                 ),
-                icon: const Icon(Icons.home, color: Colors.white),
-                label: const Text('Home', style: TextStyle(color: Colors.white)),
-              ),
+              )
             ],
           ),
         ),
