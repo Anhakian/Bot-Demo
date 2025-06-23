@@ -46,7 +46,7 @@ class BotAvatarBox extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 10.sp),
+              SizedBox(height: 2.sp),
 
               // Image
               Expanded(
@@ -73,7 +73,7 @@ class BotAvatarBox extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 8.sp),
+              SizedBox(height: 2.sp),
 
               // Description (slogan)
               Text(
@@ -84,7 +84,7 @@ class BotAvatarBox extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
 
-              SizedBox(height: 4.sp),
+              SizedBox(height: 2.sp),
 
               // MCAT Score (bold)
               Text(
