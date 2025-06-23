@@ -49,6 +49,9 @@ class BotDetailPage extends StatelessWidget {
                 Text(
                   bot.description,
                   style: TextStyle(color: Colors.grey, fontSize: 18.sp),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 10.h),
                 Text(
