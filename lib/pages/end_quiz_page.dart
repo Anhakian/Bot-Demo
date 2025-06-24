@@ -1,6 +1,7 @@
 // End Quiz Page
 
 import 'dart:math';
+import 'package:bot_demo/components/bot_app_bar.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 
@@ -40,19 +41,8 @@ class EndQuizPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFF212323),
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'MCAT Bots',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () =>
-              Navigator.popUntil(context, ModalRoute.withName('/')),
-        ),
-        actions: const [Icon(Icons.search, color: Colors.white)],
+      appBar: const BotAppBar(
+        name: 'MCAT Bots',
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF3F3D3D),

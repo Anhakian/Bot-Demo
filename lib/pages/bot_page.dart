@@ -1,4 +1,6 @@
+import 'package:bot_demo/components/bot_app_bar.dart';
 import 'package:bot_demo/components/bot_avatar_box.dart';
+import 'package:bot_demo/components/bottom_nav_bar.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,15 +14,8 @@ class BotPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF212323),
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'MCAT Bots',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        leading: const Icon(Icons.arrow_back_ios, color: Colors.white),
-        actions: const [Icon(Icons.search, color: Colors.white)],
+      appBar: const BotAppBar(
+        name: 'MCAT Bots',
       ),
       body: Padding(
         padding: EdgeInsets.all(20.w),
@@ -51,26 +46,7 @@ class BotPage extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF3F3D3D),
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 4,
-        onTap: (index) {
-          print("Selected Index: $index");
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.note_add), label: 'Study'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.line_weight), label: 'Training'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.note), label: 'Review'),
-          BottomNavigationBarItem(icon: Icon(Icons.stadium), label: 'Compete'),
-        ],
-      ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
