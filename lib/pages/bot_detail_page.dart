@@ -1,3 +1,4 @@
+import 'package:bot_demo/components/bot_app_bar.dart';
 import 'package:bot_demo/components/router.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,8 @@ class BotDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF212323),
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(bot.name, style: const TextStyle(color: Colors.white)),
-        centerTitle: true,
+      appBar: BotAppBar(
+        name: bot.name,
       ),
       body: Stack(
         children: [
@@ -77,6 +76,7 @@ class BotDetailPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 10.h),
 
                 // Achievements Button (placeholder)
                 SizedBox(
