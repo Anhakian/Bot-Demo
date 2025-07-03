@@ -28,8 +28,9 @@ class _BotDetailPageState extends State<BotDetailPage> {
     final flaskService = FlaskService();
     final response =
         await flaskService.startGame(widget.bot.name, "player_123");
+
     final sessionId = response["session_id"];
-    print(sessionId);
+    final startComment = response["start_comment"];
 
     if (!mounted) return; // check before using context
 
@@ -41,6 +42,7 @@ class _BotDetailPageState extends State<BotDetailPage> {
       Navigator.pushNamed(context, AppRouter.botQuizRoute, arguments: {
         "bot": widget.bot,
         "sessionId": sessionId,
+        "startComment": startComment,
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

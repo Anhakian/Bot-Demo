@@ -1,42 +1,66 @@
 // End Quiz Page
 
-import 'dart:math';
 import 'package:bot_demo/components/bot_app_bar.dart';
+import 'package:bot_demo/lib/services/flask_service.dart';
+import 'package:bot_demo/models/achievement.dart';
 import 'package:bot_demo/models/bot.dart';
+import 'package:bot_demo/models/end_game_result.dart';
 import 'package:flutter/material.dart';
 
-class EndQuizPage extends StatelessWidget {
+class EndQuizPage extends StatefulWidget {
   final Bot bot;
-  final int score;
+  final String sessionId;
   final int total;
+  final EndGameResult endGameResult;
   final Duration timeTaken;
 
   const EndQuizPage({
     super.key,
     required this.bot,
-    required this.score,
+    required this.sessionId,
+    required this.endGameResult,
     required this.total,
     required this.timeTaken,
   });
 
   @override
+  State<EndQuizPage> createState() => _EndQuizPageState();
+}
+
+class _EndQuizPageState extends State<EndQuizPage> {
+  final FlaskService flaskService = FlaskService();
+
+  @override
+  @override
   Widget build(BuildContext context) {
-    final int minutes = timeTaken.inMinutes;
-    final int seconds = timeTaken.inSeconds % 60;
-    final int botScore =
-        Random().nextInt(total + 1); // Random bot score between 0 and total
+    final result = widget.endGameResult.result;
+    final playerCorrect = widget.endGameResult.playerCorrect;
+    final botCorrect = widget.endGameResult.botCorrect;
+    final accuracy = widget.endGameResult.accuracy;
+    final avgTime = widget.endGameResult.avgTime;
+    final delta = widget.endGameResult.delta;
+    final finalScore = widget.endGameResult.finalScore;
+    final coins = widget.endGameResult.coins;
+    final achievements = widget.endGameResult.achievements;
+    final comment = widget.endGameResult.comment;
 
-    // Determine which achievements were earned
-    List<Map<String, String>> earnedAchievements = [];
+    final List<Achievement> earnedAchievements =
+        widget.endGameResult.achievements;
 
-    if (timeTaken.inSeconds < 60) {
-      earnedAchievements.add(
-          {'title': '⏱️ Speed Demon', 'subtitle': 'Completed under 1 minute'});
+    final minutes = widget.timeTaken.inMinutes;
+    final seconds = widget.timeTaken.inSeconds % 60;
+
+    if (seconds < 60) {
+      earnedAchievements.add(Achievement(
+          title: '⏱️ Speed Demon', subtitle: 'Completed under 1 minute'));
     }
-
-    if (score == total) {
+    if (playerCorrect == widget.total) {
       earnedAchievements.add(
-          {'title': '🎯 Perfect Score', 'subtitle': '5 out of 5 correct!'});
+        Achievement(
+          title: '🎯 Perfect Score',
+          subtitle: '${widget.total} out of ${widget.total} correct!',
+        ),
+      );
     }
 
     return Scaffold(
@@ -76,7 +100,7 @@ class EndQuizPage extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
-                        bot.image,
+                        widget.bot.image,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -106,7 +130,7 @@ class EndQuizPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Your Score: $score / $total',
+                      'Your Score: $playerCorrect / ${widget.total}',
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -119,7 +143,7 @@ class EndQuizPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Bot Score: $botScore / $total',
+                      'Bot Score: $botCorrect / ${widget.total}',
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ],
@@ -130,7 +154,7 @@ class EndQuizPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
-                    children: const [
+                    children: [
                       Text('💰', style: TextStyle(fontSize: 30)),
                       Text('+100 Coins', style: TextStyle(color: Colors.green)),
                       Text('Total: 1450',
@@ -138,7 +162,7 @@ class EndQuizPage extends StatelessWidget {
                     ],
                   ),
                   Column(
-                    children: const [
+                    children: [
                       Text('📓', style: TextStyle(fontSize: 30)),
                       Text('+2 MCAT score',
                           style: TextStyle(color: Colors.green)),
@@ -180,11 +204,11 @@ class EndQuizPage extends StatelessWidget {
                               leading: const Icon(Icons.emoji_events,
                                   color: Colors.amber),
                               title: Text(
-                                achievement['title']!,
+                                achievement.title,
                                 style: const TextStyle(color: Colors.white),
                               ),
                               subtitle: Text(
-                                achievement['subtitle']!,
+                                achievement.subtitle,
                                 style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 12,
