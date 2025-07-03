@@ -10,11 +10,13 @@ import '../lib/services/flask_service.dart';
 class QuizScreen extends StatefulWidget {
   final Bot bot;
   final String sessionId;
+  final String startComment;
 
   const QuizScreen({
     super.key,
     required this.bot,
     required this.sessionId,
+    required this.startComment,
   });
 
   @override
@@ -104,7 +106,8 @@ class _QuizScreenState extends State<QuizScreen> {
       await fetchQuestionFromApi();
     } else {
       // Call the /end API and send the score
-      await _flaskService.endGame(widget.sessionId, score);
+      final endGameResult =
+          await _flaskService.endGame(widget.sessionId, score);
 
       // Navigate to the end quiz screen
       Navigator.pushReplacementNamed(
@@ -112,9 +115,9 @@ class _QuizScreenState extends State<QuizScreen> {
         '/endquiz',
         arguments: {
           'bot': widget.bot,
-          'score': score,
           'total': NUM_QUESTIONS,
           'timeTaken': DateTime.now().difference(startTime),
+          'endGameResult': endGameResult,
         },
       );
     }
@@ -134,7 +137,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Color getTextAnswerColor() {
     if (!isAnswered) return Colors.grey[300]!;
     return (textController.text.trim().toLowerCase() ==
-        currentQuestion?['answer'].toLowerCase().trim())
+            currentQuestion?['answer'].toLowerCase().trim())
         ? Colors.green
         : Colors.red;
   }
@@ -153,33 +156,33 @@ class _QuizScreenState extends State<QuizScreen> {
         children: options
             .map(
               (option) => Padding(
-            padding: EdgeInsets.only(bottom: 16.sp),
-            child: GestureDetector(
-              onTap: () {
-                selectAnswer(option);
-                nextQuestion();
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50.h,
-                decoration: BoxDecoration(
-                  color: getOptionColor(option),
-                  borderRadius: BorderRadius.circular(8.sp),
-                ),
-                child: Center(
-                  child: Text(
-                    option,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
+                padding: EdgeInsets.only(bottom: 16.sp),
+                child: GestureDetector(
+                  onTap: () {
+                    selectAnswer(option);
+                    nextQuestion();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      color: getOptionColor(option),
+                      borderRadius: BorderRadius.circular(8.sp),
+                    ),
+                    child: Center(
+                      child: Text(
+                        option,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        )
+            )
             .toList(),
       );
     } else if (questionType == 'truefalse') {
@@ -187,33 +190,33 @@ class _QuizScreenState extends State<QuizScreen> {
         children: ['True', 'False']
             .map(
               (option) => Padding(
-            padding: EdgeInsets.only(bottom: 16.sp),
-            child: GestureDetector(
-              onTap: () {
-                selectAnswer(option);
-                nextQuestion();
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50.h,
-                decoration: BoxDecoration(
-                  color: getOptionColor(option),
-                  borderRadius: BorderRadius.circular(8.sp),
-                ),
-                child: Center(
-                  child: Text(
-                    option,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
+                padding: EdgeInsets.only(bottom: 16.sp),
+                child: GestureDetector(
+                  onTap: () {
+                    selectAnswer(option);
+                    nextQuestion();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      color: getOptionColor(option),
+                      borderRadius: BorderRadius.circular(8.sp),
+                    ),
+                    child: Center(
+                      child: Text(
+                        option,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        )
+            )
             .toList(),
       );
     } else if (questionType == 'text') {
@@ -277,69 +280,69 @@ class _QuizScreenState extends State<QuizScreen> {
           child: currentQuestion == null
               ? const Center(child: CircularProgressIndicator())
               : Column(
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 70.w,
-                    height: 70.h,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        widget.bot.image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.person,
-                            size: 40.sp,
-                            color: Colors.white,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16.sp),
-                  const DialogueBox(),
-                ],
-              ),
-              SizedBox(height: 20.h),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(20.sp),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3F3D3D),
-                  borderRadius: BorderRadius.circular(8.sp),
-                ),
-                child: Column(
                   children: [
-                    Text(
-                      'Question ${currentQuestionIndex + 1}/$NUM_QUESTIONS',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 70.w,
+                          height: 70.h,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              widget.bot.image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(
+                                  Icons.person,
+                                  size: 40.sp,
+                                  color: Colors.white,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16.sp),
+                        const DialogueBox(),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(20.sp),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3F3D3D),
+                        borderRadius: BorderRadius.circular(8.sp),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Question ${currentQuestionIndex + 1}/$NUM_QUESTIONS',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            currentQuestion!['question'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 10.h),
-                    Text(
-                      currentQuestion!['question'],
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(height: 20.h),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: buildAnswerOptions(),
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: buildAnswerOptions(),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
       bottomNavigationBar: const BottomNavBar(),

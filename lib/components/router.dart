@@ -1,5 +1,6 @@
 import 'package:bot_demo/main.dart';
 import 'package:bot_demo/models/bot.dart';
+import 'package:bot_demo/models/end_game_result.dart';
 import 'package:bot_demo/pages/bot_detail_page.dart';
 import 'package:bot_demo/pages/quiz_page.dart';
 import 'package:bot_demo/pages/end_quiz_page.dart';
@@ -26,6 +27,7 @@ class AppRouter {
           builder: (_) => QuizScreen(
             bot: args['bot'],
             sessionId: args['sessionId'],
+            startComment: args['startComment'],
           ),
         );
 
@@ -42,10 +44,11 @@ class AppRouter {
 
         return MaterialPageRoute(
           builder: (_) => EndQuizPage(
+            sessionId: args['sessionId'],
             bot: args['bot'],
-            score: args['score'],
             total: args['total'],
             timeTaken: args['timeTaken'],
+            endGameResult: args['endGameResult'] as EndGameResult,
           ),
         );
 
