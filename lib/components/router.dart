@@ -21,8 +21,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => BotDetailPage(bot: bot));
 
       case botQuizRoute:
-        final bot = settings.arguments as Bot;
-        return MaterialPageRoute(builder: (_) => QuizScreen(bot: bot));
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => QuizScreen(
+            bot: args['bot'],
+            sessionId: args['sessionId'],
+          ),
+        );
 
       case endQuizRoute:
         final args = settings.arguments as Map<String, dynamic>?;
