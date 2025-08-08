@@ -4,15 +4,16 @@ import 'package:bot_demo/components/dialogue_box.dart';
 import 'package:bot_demo/models/bot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../resources/questions.dart';
 
 class QuizScreen extends StatefulWidget {
   final Bot bot;
+  final int playerMcat; // starting MCAT score
 
   const QuizScreen({
     super.key,
     required this.bot,
+    this.playerMcat = 509,
   });
 
   @override
@@ -29,24 +30,24 @@ class _QuizScreenState extends State<QuizScreen> {
   bool isAnswered = false;
 
   late List<Map<String, dynamic>> currentQuestions;
-  late List<Map<String, dynamic>> allQuestions;
+
+  String getDifficultyForScore(int score) {
+    if (score < 500) return "beginner";
+    if (score < 510) return "novice";
+    if (score < 520) return "advanced";
+    return "expert";
+  }
 
   @override
   void initState() {
-    startTime = DateTime.now();
     super.initState();
+    startTime = DateTime.now();
 
-    // Flatten all questions from all categories
-    allQuestions = QUESTION_BANK.values.expand((list) => list).toList();
-
-    shuffleQuestions();
-  }
-
-  void shuffleQuestions() {
-    // Shuffle the list for randomness
-    allQuestions.shuffle();
-
-    currentQuestions = allQuestions.take(NUM_QUESTIONS).toList();
+    String difficulty = getDifficultyForScore(widget.playerMcat);
+    currentQuestions =
+        List<Map<String, dynamic>>.from(QUESTION_BANK[difficulty]!);
+    currentQuestions.shuffle();
+    currentQuestions = currentQuestions.take(NUM_QUESTIONS).toList();
   }
 
   Map<String, dynamic> get currentQuestion =>
@@ -62,7 +63,6 @@ class _QuizScreenState extends State<QuizScreen> {
     String correctAnswer = currentQuestion['answer'];
     bool isCorrect = false;
 
-    // Check if the selected answer is correct
     if (currentQuestion['type'] == 'text') {
       isCorrect = textController.text.toLowerCase().trim() ==
           correctAnswer.toLowerCase().trim();
@@ -70,20 +70,17 @@ class _QuizScreenState extends State<QuizScreen> {
       isCorrect = selectedAnswer == correctAnswer;
     }
 
-    // Update score if correct
     if (isCorrect) {
       setState(() {
         score++;
       });
     }
 
-    // Mark the question as answered
     setState(() {
       isAnswered = true;
     });
 
-    // Add delay before moving to the next question or finishing the quiz
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       if (currentQuestionIndex < currentQuestions.length - 1) {
         setState(() {
           currentQuestionIndex++;
@@ -92,7 +89,6 @@ class _QuizScreenState extends State<QuizScreen> {
           isAnswered = false;
         });
       } else {
-        // Quiz finished
         Navigator.pushReplacementNamed(
           context,
           '/endquiz',
@@ -101,6 +97,7 @@ class _QuizScreenState extends State<QuizScreen> {
             'score': score,
             'total': currentQuestions.length,
             'timeTaken': DateTime.now().difference(startTime),
+            'playerMcat': widget.playerMcat,
           },
         );
       }
@@ -108,107 +105,83 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Color getOptionColor(String option) {
-    if (!isAnswered) {
-      return Colors.grey[300]!;
-    }
-
+    if (!isAnswered) return Colors.grey[300]!;
     if (option == selectedAnswer &&
-        selectedAnswer != currentQuestion['answer']) {
-      return Colors.red;
-    }
-
+        selectedAnswer != currentQuestion['answer']) return Colors.red;
     if (option == selectedAnswer &&
-        selectedAnswer == currentQuestion['answer']) {
-      return Colors.green;
-    }
-
+        selectedAnswer == currentQuestion['answer']) return Colors.green;
     return Colors.grey[300]!;
   }
 
   Color getTextAnswerColor() {
-    if (!isAnswered) {
-      return Colors.grey[300]!;
-    }
-
+    if (!isAnswered) return Colors.grey[300]!;
     if (textController.text.trim().toLowerCase() ==
-        currentQuestion['answer'].toLowerCase().trim()) {
-      return Colors.green;
-    } else {
-      return Colors.red;
-    }
+        currentQuestion['answer'].toLowerCase().trim()) return Colors.green;
+    return Colors.red;
   }
 
   Widget buildAnswerOptions() {
     String questionType = currentQuestion['type'];
 
     if (questionType == 'mcq') {
-      List<String> options = List<String>.from(currentQuestion['options']);
       return Column(
-        children: options
-            .map(
-              (option) => Padding(
-                padding: EdgeInsets.only(bottom: 16.sp),
-                child: GestureDetector(
-                  onTap: () {
-                    selectAnswer(option);
-                    nextQuestion();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 50.h,
-                    decoration: BoxDecoration(
-                      color: getOptionColor(option),
-                      borderRadius: BorderRadius.circular(8.sp),
-                    ),
-                    child: Center(
-                      child: Text(
-                        option,
+        children: List<String>.from(currentQuestion['options']).map(
+          (option) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 16.sp),
+              child: GestureDetector(
+                onTap: () {
+                  selectAnswer(option);
+                  nextQuestion();
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    color: getOptionColor(option),
+                    borderRadius: BorderRadius.circular(8.sp),
+                  ),
+                  child: Center(
+                    child: Text(option,
                         style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black)),
                   ),
                 ),
               ),
-            )
-            .toList(),
+            );
+          },
+        ).toList(),
       );
     } else if (questionType == 'truefalse') {
       return Column(
-        children: ['True', 'False']
-            .map(
-              (option) => Padding(
-                padding: EdgeInsets.only(bottom: 16.sp),
-                child: GestureDetector(
-                  onTap: () {
-                    selectAnswer(option);
-                    nextQuestion();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 50.h,
-                    decoration: BoxDecoration(
-                      color: getOptionColor(option),
-                      borderRadius: BorderRadius.circular(8.sp),
-                    ),
-                    child: Center(
-                      child: Text(
-                        option,
-                        style: TextStyle(
+        children: ['True', 'False'].map((option) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: 16.sp),
+            child: GestureDetector(
+              onTap: () {
+                selectAnswer(option);
+                nextQuestion();
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50.h,
+                decoration: BoxDecoration(
+                  color: getOptionColor(option),
+                  borderRadius: BorderRadius.circular(8.sp),
+                ),
+                child: Center(
+                  child: Text(option,
+                      style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                          color: Colors.black)),
                 ),
               ),
-            )
-            .toList(),
+            ),
+          );
+        }).toList(),
       );
     } else if (questionType == 'text') {
       return Column(
@@ -227,15 +200,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 hintText: 'Your answer...',
                 border: InputBorder.none,
               ),
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.black,
-              ),
-              onChanged: (value) {
-                setState(() {
-                  selectedAnswer = value.isNotEmpty ? value : null;
-                });
-              },
+              style: TextStyle(fontSize: 16.sp, color: Colors.black),
             ),
           ),
           SizedBox(height: 10.h),
@@ -244,19 +209,13 @@ class _QuizScreenState extends State<QuizScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3F3D3D),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.sp),
-              ),
+                  borderRadius: BorderRadius.circular(12.sp)),
             ),
-            child: Icon(
-              Icons.send,
-              color: Colors.grey[400],
-              size: 20.sp,
-            ),
+            child: Icon(Icons.send, color: Colors.grey[400], size: 20.sp),
           )
         ],
       );
     }
-
     return Container();
   }
 
@@ -264,9 +223,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[900],
-      appBar: const BotAppBar(
-        name: 'MCAT Bots',
-      ),
+      appBar: const BotAppBar(name: 'MCAT Bots'),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16.sp),
@@ -274,38 +231,19 @@ class _QuizScreenState extends State<QuizScreen> {
             children: [
               Row(
                 children: [
-                  // Avatar
                   SizedBox(
                     width: 70.w,
                     height: 70.h,
-                    // decoration: BoxDecoration(
-                    //   color: Colors.brown[300],
-                    //   borderRadius: BorderRadius.circular(8),
-                    // ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        widget.bot.image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.person,
-                            size: 40.sp,
-                            color: Colors.white,
-                          );
-                        },
-                      ),
+                      child: Image.asset(widget.bot.image, fit: BoxFit.cover),
                     ),
                   ),
                   SizedBox(width: 16.sp),
-
-                  const DialogueBox()
+                  const DialogueBox(),
                 ],
               ),
-
               SizedBox(height: 20.h),
-
-              // Question section
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(20.sp),
@@ -317,10 +255,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   children: [
                     Text(
                       'Question ${currentQuestionIndex + 1}/${currentQuestions.length}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     ),
                     SizedBox(height: 10.h),
                     Text(
@@ -335,15 +270,8 @@ class _QuizScreenState extends State<QuizScreen> {
                   ],
                 ),
               ),
-
               SizedBox(height: 20.h),
-
-              // Answer options
-              Expanded(
-                child: SingleChildScrollView(
-                  child: buildAnswerOptions(),
-                ),
-              ),
+              Expanded(child: SingleChildScrollView(child: buildAnswerOptions())),
             ],
           ),
         ),
