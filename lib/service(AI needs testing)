@@ -1,0 +1,191 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+/// Lightweight Vertex AI client + local memory.
+/// - getBotQuestions: picks topic-focused questions (tries Vertex, falls back locally)
+/// - getBotDialogue: returns one witty line, updated by memory
+///
+/// Plug in your Vertex details below, or leave empty to use fallback mode.
+class VertexAIService {
+  final String apiKey;
+  final String endpoint;
+  final Map<String, List<String>> _botMemories = {};
+
+  VertexAIService({
+    required this.apiKey,
+    required this.endpoint,
+  });
+
+  bool get _useVertex =>
+      apiKey.trim().isNotEmpty && endpoint.trim().isNotEmpty;
+
+  /// Try Vertex to pick [numQuestions] from [questionBank] biased by [subjectFocus].
+  /// Fallback: local filter by simple keyword match.
+  Future<List<Map<String, dynamic>>> getBotQuestions({
+    required String botName,
+    required List<String> subjectFocus,
+    required List<Map<String, dynamic>> questionBank,
+    int numQuestions = 5,
+  }) async {
+    if (_useVertex) {
+      try {
+        final prompt = """
+You are selecting MCAT questions for $botName.
+Focus strongly on these topics: ${subjectFocus.join(', ')}.
+Given a question bank (JSON list), pick exactly $numQuestions questions that best match those topics.
+Return ONLY a JSON array of question objects (no commentary). Keep original keys: question, answer, type, options(if present).
+""";
+
+        final response = await http.post(
+          Uri.parse(endpoint),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $apiKey',
+          },
+          body: jsonEncode({
+            // Adjust this schema to your actual Vertex model's expected payload.
+            'instances': [
+              {
+                'prompt': prompt,
+                'question_bank': questionBank,
+              }
+            ],
+            'parameters': {'temperature': 0.4}
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          // Adjust this extraction to your Vertex response shape
+          final raw = data['predictions']?[0]?['content'];
+          if (raw is String) {
+            final parsed = jsonDecode(raw);
+            return List<Map<String, dynamic>>.from(parsed);
+          } else if (raw is List) {
+            return List<Map<String, dynamic>>.from(raw);
+          }
+        } else {
+          // fallthrough to local
+        }
+      } catch (_) {
+        // fallthrough to local
+      }
+    }
+
+    // ---- Local fallback: filter by naive keyword match, then sample.
+    final lowerFocus = subjectFocus.map((s) => s.toLowerCase()).toList();
+    bool matchesFocus(Map<String, dynamic> q) {
+      final text = (q['question'] ?? '').toString().toLowerCase();
+      // cheap keyword map
+      final tags = <String>{
+        if (text.contains('force') ||
+            text.contains('charge') ||
+            text.contains('voltage') ||
+            text.contains('work') ||
+            text.contains('kinetic') ||
+            text.contains('ecg') || // physics-ish in BME context
+            text.contains('pressure'))
+          'physics',
+        if (text.contains('amino') ||
+            text.contains('enzyme') ||
+            text.contains('metabol') ||
+            text.contains('protein') ||
+            text.contains('dna') ||
+            text.contains('rna') ||
+            text.contains('telomer') ||
+            text.contains('translation') ||
+            text.contains('gene'))
+          'biochemistry',
+        if (text.contains('cell') ||
+            text.contains('mitochondria') ||
+            text.contains('organ') ||
+            text.contains('pancreas'))
+          'biology',
+        if (text.contains('psych') || text.contains('socio'))
+          'psych/soc',
+        'general',
+      };
+      return lowerFocus.any((f) => tags.contains(f));
+    }
+
+    final focused = questionBank.where(matchesFocus).toList();
+    focused.shuffle();
+    final pick = focused.isNotEmpty ? focused : questionBank..shuffle();
+    return List<Map<String, dynamic>>.from(pick.take(numQuestions));
+  }
+
+  /// Generate bot dialogue based on situation + memory
+  Future<String> getBotDialogue({
+    required String botName,
+    required String situation, // "start" | "end_win" | "end_lose" | "tie" etc.
+  }) async {
+    final memorySnippet = (_botMemories[botName] ?? []).join('  ');
+    if (_useVertex) {
+      try {
+        final prompt = """
+You are "$botName" in an MCAT battle game.
+Situation: $situation
+Past memory lines to reference: $memorySnippet
+Reply in ONE short, witty line in-character. No quotes, no extra JSON.
+""";
+        final response = await http.post(
+          Uri.parse(endpoint),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $apiKey',
+          },
+          body: jsonEncode({
+            'instances': [
+              {'prompt': prompt}
+            ],
+            'parameters': {'temperature': 0.8}
+          }),
+        );
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          final line = data['predictions']?[0]?['content']?.toString() ?? '';
+          _remember(botName, line);
+          return line.isNotEmpty ? line : _fallbackLine(botName, situation);
+        }
+      } catch (_) {
+        // fallthrough to fallback
+      }
+    }
+    final line = _fallbackLine(botName, situation);
+    _remember(botName, line);
+    return line;
+  }
+
+  void _remember(String botName, String line) {
+    if (line.trim().isEmpty) return;
+    _botMemories.putIfAbsent(botName, () => []);
+    _botMemories[botName]!.add(line);
+    // Optional: clamp memory length
+    if (_botMemories[botName]!.length > 20) {
+      _botMemories[botName] = _botMemories[botName]!.sublist(5);
+    }
+  }
+
+  String _fallbackLine(String botName, String situation) {
+    switch (situation) {
+      case 'start':
+        return botName.contains('Einstein')
+            ? 'Shall we bend space-time—or just the curve?'
+            : botName.contains('CRISPR')
+                ? 'Let’s edit out your errors.'
+                : botName.contains('King')
+                    ? 'Kneel—then rise to glory!'
+                    : 'Systems check complete. Begin.';
+      case 'end_win':
+        return botName.contains('King')
+            ? 'By royal decree—you impressed the crown.'
+            : 'Victory acknowledged. Upgrade successful.';
+      case 'end_lose':
+        return botName.contains('King')
+            ? 'The crown remains—return when you’re worthy.'
+            : 'Defeat logged. Iterate and improve.';
+      default:
+        return 'A draw? Intriguing.';
+    }
+  }
+}
